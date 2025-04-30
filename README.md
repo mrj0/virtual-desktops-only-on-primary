@@ -3,23 +3,40 @@
 This is a script that brings a feature similar to GNOME Mutter's `workspaces-only-on-primary` option, that is switchable virtual desktops on the primary monitor, and non-switchable virtual desktops on other monitors.
 
 Functionality:
-* All windows placed on monitors other than the primary, are automatically set to be shown on all virtual desktops.
-* When window is moved to a primary screen, it will be assigned to a current virtual desktp.
+
+- All windows placed on monitors other than the primary, are automatically set to be shown on all virtual desktops.
+- When window is moved to a primary screen, it will be assigned to a current virtual desktop.
 
 This can be considered a hack, but from the user's perspective, this effectively results in having multiple switchable virtual desktops on the primary monitor, and fixed non-switchable virtual desktops on other monitors.
 That's how GNOME Shell handles workspaces by default, and the script mimics that.
 
-## IMPORTANT:
-This script is intended for, and works best on laptops that have external monitor connected.
-The script might not work well on desktops with multiple monitors due to unpredictable power management for each monitor.
+## INSTALLATION:
 
-For fine tuning the script provides some configuration, e.g. if you primary display is not the first one in KWin list.
-In that case, in order to determine the index of you screen use the bash script that is shipped in the package:
+Manual installation can be done by copying the script to `~/.local/share/kwin/scripts/` or by running the command:
 
-`bash ~/.local/share/kwin/scripts/virtual-desktops-only-on-primary/list-screens.sh`
+```bash
+kpackagetool6 --type=KWin/Script -i `pwd`
+```
 
-After running this script in the terminal you should see the names and the index numbers of your screens. You can then adjust the configuration accordingly.
-##
+Next, you'll need to configure the script in KWin settings. Open KDE System Settings, go to Window Management > KWin Scripts, and enable the script.
+
+Click on the "Configure" button to open the configuration dialog. Here you can set the following options:
+
+- **Primary Screen**: The name of the primary screen. By default, the script will use the configured primary monitor.
+
+- **Number of screens**: The number of screens. Unless the number of configured screens are connected, the script will ignore window changes. This helps avoid changing windows as you connect or disconnect monitors. Change this to the number of monitors you have connected.
+
+```js
+for (let i = 0; i < workspace.screens.length; i++) {
+  const screen = workspace.screens[i];
+  console.log(
+    `Screen #${i}: Name: ${screen.name}, Brand: ${screen.manufacturer}, Model: ${screen.model}`,
+  );
+}
+```
+
+The script will output the names of your monitors to the system log, which can be viewed with the command `journalctl --follow --user`
 
 ### Preview:
+
 ![VirtualBox_Neon_23_05_2024_18_31_01](https://github.com/Ubiquitine/virtual-desktops-only-on-primary/assets/3274951/64b30973-872f-47ec-a3fb-bcbb93f6ab49)
