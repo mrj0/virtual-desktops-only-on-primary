@@ -5,9 +5,7 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name=""/>
   <group name="">
-    <entry name="primaryOutputIndex" type="string">
-      <default>0</default>
-    </entry>
+    <entry name="primaryOutputName" type="string" />
     <entry name="numberOfScreens" type="string">
       <default>2</default>
     </entry>
