@@ -82,9 +82,7 @@ function bindUpdate(window) {
 }
 
 function updateAll() {
-  if (busy) {
-    return;
-  }
+  if (busy) return;
   busy = true;
   try {
     const primaryScreen = getPrimaryScreen();
@@ -111,6 +109,8 @@ function main() {
   update();
   workspace.windowAdded.connect(bindUpdate);
   workspace.screensChanged.connect(update);
+  workspace.desktopsChanged.connect(update);
+  workspace.desktopLayoutChanged.connect(update);
 }
 
 main();
