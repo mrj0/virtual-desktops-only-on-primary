@@ -18,6 +18,7 @@ function bindWindow(window) {
 
 function getPrimaryScreen() {
   let primaryOutputName = readConfig("primaryOutputName", "");
+  log(`PrimaryOutputName (from config): ${primaryOutputName}`);
   const numberOfScreens = readConfig("numberOfScreens", 2);
   if (workspace.screens.length < numberOfScreens) {
     log("Not all displays are present. Not updating");
@@ -30,6 +31,7 @@ function getPrimaryScreen() {
       const w = windows[i];
       if (w.dock) {
         primaryOutputName = w.output.name;
+        log(`from window with dock ${JSON.stringify(w)}`);
         log(`Discovered primary output name: ${primaryOutputName}`);
         break;
       }
@@ -48,6 +50,20 @@ function getPrimaryScreen() {
   return null;
 }
 
+function removeTile(window) {
+  const geometry = window.frameGeometry;
+
+  if (window.tile && window.onAllDesktops) {
+    log(`removing tile on window: ${window.resourceName}:${window.internalId}`);
+    window.tile = null;
+    window.frameGeometry = geometry;
+  } else {
+    if (!window.tile && window.onAllDesktops) {
+      log(`window has no tile: ${window.resourceName}:${window.internalId}`);
+    }
+  }
+}
+
 function updateWindow(window) {
   window = window || this;
 
@@ -59,6 +75,8 @@ function updateWindow(window) {
   ) {
     return;
   }
+
+  removeTile(window);
 
   const primaryScreen = getPrimaryScreen();
   if (primaryScreen == null) {

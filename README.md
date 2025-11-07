@@ -40,3 +40,20 @@ The script will output the names of your monitors to the system log, which can b
 ### Preview:
 
 ![VirtualBox_Neon_23_05_2024_18_31_01](https://github.com/Ubiquitine/virtual-desktops-only-on-primary/assets/3274951/64b30973-872f-47ec-a3fb-bcbb93f6ab49)
+
+### Development
+
+To update the script, first unload
+
+```bash
+qdbus6 org.kde.KWin /Scripting unloadScript virtual-desktops-only-on-primary
+```
+
+Install the script again, you may need to remove the script from the "KWIN scripts" settings panel before install will work.
+
+```bash
+kpackagetool6 --type=KWin/Script -i `pwd`
+qdbus6 org.kde.KWin /Scripting start
+```
+
+See: https://discuss.kde.org/t/how-to-properly-reload-a-kwin-script/4260
